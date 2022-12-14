@@ -1,9 +1,10 @@
-require("dotenv").config;
+require("dotenv").config();
 
 const { SECRET } = process.env;
-const {User} = require('../models/user')
+const { User } = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 
 const createToken = (username, id) => {
   return jwt.sign(
@@ -13,7 +14,7 @@ const createToken = (username, id) => {
     },
     SECRET,
     {
-      expiresIn: "3 days",
+      expiresIn: "2 days",
     }
   );
 };
@@ -22,22 +23,23 @@ module.exports = {
   register: async (req, res) => {
     try {
       const { username, password } = req.body;
-      console.log(password);
+      console.log(password)
       let foundUser = await User.findOne({ where: { username } });
       if (foundUser) {
-        res.status(400).send("Already a User");
+        res.status(400).send("Already a user");
       } else {
-        const salt = bcrypt.genSaltSync(12);
+        const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
+        console.log(hash)
         let newUser = await User.create({
           username,
-          hashPass: hash,
+          hashPass: hash
         });
         let token = createToken(
           newUser.dataValues.username,
           newUser.dataValues.id
         );
-        const exp = Date.now() + 1000 * 60 * 60 * 72;
+        const exp = Date.now() + 1000 * 60 * 60 * 48;
         res.status(200).send({
           username: newUser.dataValues.username,
           userId: newUser.dataValues.id,
@@ -54,18 +56,16 @@ module.exports = {
     try {
       const { username, password } = req.body;
       let foundUser = await User.findOne({ where: { username } });
-      console.log(foundUser, "foundUser");
+      console.log(foundUser)
       if (foundUser) {
-        const isAuthenticated = bcrypt.compareSync(
-          password,
-          foundUser.hashPass
-        );
+        //make sure variable names match up with the names in the models
+        const isAuthenticated = bcrypt.compareSync(password, foundUser.hashPass)
         if (isAuthenticated) {
           const token = createToken(
             foundUser.dataValues.username,
             foundUser.dataValues.id
           );
-          const exp = Date.now() + 1000 * 60 * 60 * 72;
+          const exp = Date.now() + 1000 * 60 * 60 * 48;
           res.status(200).send({
             username: foundUser.dataValues.username,
             userId: foundUser.dataValues.id,
@@ -73,10 +73,10 @@ module.exports = {
             exp,
           });
         } else {
-          res.status(400).send("No User found");
+          res.status(400).send("No user found bucko");
         }
       } else {
-        res.status(400).send("No User Found");
+        res.status(400).send("No user found with that username bucko");
       }
     } catch (err) {
       console.log(err);

@@ -1,1 +1,9 @@
-/Users/PAPAGABE/extraProjects/JobHunter/job-hunter/src/Components/Header
+import React from 'react'
+
+const Header = () => {
+  return (
+    <div>Header</div>
+  )
+}
+
+export default Header
