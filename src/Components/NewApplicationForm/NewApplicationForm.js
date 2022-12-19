@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import AuthContext from "../../store/authContext";
 const NewApplicationForm = () => {
+
   const { token, userId } = useContext(AuthContext);
 
   const [jobTitle, setJobTitle] = useState("");
@@ -11,7 +12,26 @@ const NewApplicationForm = () => {
   const [interviewStatus, setInterviewStatus] = useState(false);
   const [jobPostingLink, setJobPostingLink] = useState("");
 
-  const submitHandler = () => {};
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    axios.post(
+      `/adding/${userId}`,
+      {
+        jobTitle,
+        applicationDate,
+        hiringManager,
+        interviewStatus,
+        jobPostingLink,
+        userId
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  };
   return (
     <Wrapper>
       <Form onSubmit={submitHandler}>
@@ -29,6 +49,11 @@ const NewApplicationForm = () => {
           placeholder="Hiring Manager"
           value={hiringManager}
           onChange={(e) => setHiringManager(e.target.value)}
+        />
+        <JobPostingLinkInput
+          placeholder="Application Website"
+          value={jobPostingLink}
+          onChange={(e) => setJobPostingLink(e.target.value)}
         />
         <h3>Heard Back Yet?</h3>
         <Item>
@@ -60,7 +85,7 @@ const Form = styled.form``;
 const JobTitleInput = styled.input``;
 const HiringManagerInput = styled.input``;
 const ApplicationDate = styled.input``;
-const jobPostingLinkInput = styled.input``;
+const JobPostingLinkInput = styled.input``;
 const SubmitButton = styled.button``;
 const Item = styled.div``;
 const RadioButton = styled.input``;

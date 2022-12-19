@@ -24,7 +24,7 @@ Application.belongsTo(User)
 app.post('/register', register)
 app.post('/login', login)
 
-app.post('/adding', addApplication)
+app.post('/adding/:userId', addApplication)
 app.get('/applications/:userId', isAuthenticated, getApplication)
 app.delete('/application/:id', isAuthenticated, deleteApplication)
 app.put('/application/:id', isAuthenticated, editApplication)
