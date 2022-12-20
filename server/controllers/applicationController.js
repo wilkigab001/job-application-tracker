@@ -58,11 +58,11 @@ module.exports = {
             } = req.body;
             await Application.update({
                 applicationId,
-                jobTitle,
-                applicationDate,
-                hiringManager,
-                interviewStatus,
-                jobPostingLink,
+                jobTitle: jobTitle,
+                applicationDate: applicationDate,
+                hiringManager: hiringManager,
+                interviewStatus: interviewStatus,
+                jobPostingLink: jobPostingLink,
                 userId
             },
            { where: {id: +id}})

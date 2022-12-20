@@ -8,7 +8,7 @@ const Home = () => {
   const { token, userId } = useContext(AuthContext);
   const [applications, setApplications] = useState([]);
 
-  const getApplications = async () => {
+  const getApplications = () => {
     console.log("getting applications");
     axios
       .get(`/applications/${userId}`)
