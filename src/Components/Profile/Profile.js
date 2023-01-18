@@ -1,9 +1,38 @@
-import React from 'react'
+import React, { useState, useContext, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import AuthContext from "../../store/authContext";
+import Applications from "../Applications/Applications";
 
 const Profile = () => {
-  return (
-    <div>Profile</div>
-  )
-}
+  const { token, userId } = useContext(AuthContext);
+  const [applications, setApplications] = useState([]);
 
-export default Profile
+  const getApplications = () => {
+    console.log("getting applications");
+    axios
+      .get(`/applications/${userId}`)
+      .then((res) => setApplications(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getApplications();
+  }, []);
+  
+  return (
+    <Wrapper>
+      {applications.map((application) => {
+        return (
+          <Applications
+            key={application.id}
+            application={application}
+            getApplications={getApplications}
+          />
+        );
+      })}
+    </Wrapper>
+  );
+};
+const Wrapper = styled.div``;
+export default Profile;

@@ -25,7 +25,6 @@ const Home = () => {
       {applications.map((application) => {
         return <Applications key={application.id} application={application} getApplications={getApplications} />;
       })}
-      h
     </Wrapper>
   );
 };
