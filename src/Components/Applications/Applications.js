@@ -13,6 +13,9 @@ const Applications = ({ application, getApplications }) => {
   const [hiringManager, setHiringManager] = useState(application.hiringManager);
   const [interviewStatus, setInterviewStatus] = useState(application.interviewStatus);
   const [jobPostingLink, setJobPostingLink] = useState(application.jobPostingLink);
+  const [month, setMonth] = useState(application.month)
+  const [year, setYear] = useState(application.year)
+
 
   
   useEffect(()=>{
@@ -38,7 +41,8 @@ const Applications = ({ application, getApplications }) => {
     e.preventDefault();
     const body = {
       jobTitle,
-      applicationDate,
+      month,
+      year,
       hiringManager,
       interviewStatus,
       jobPostingLink,
@@ -62,7 +66,8 @@ const Applications = ({ application, getApplications }) => {
           {" "}
           <JobTitle>{application.jobTitle} job</JobTitle>
           <ApplicationDate>
-            {application.applicationDate} apply date
+            {application.month} apply month
+            {application.year} apply year
           </ApplicationDate>
           <HiringManager>
             {application.hiringManager} hiring manager
